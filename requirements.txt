@@ -1,0 +1,169 @@
+# NASSCOMOT - Quantum-Safe Cryptography for Automotive Systems
+# Python Dependencies
+
+# ============================================
+# Core Cryptography Libraries
+# ============================================
+
+# Post-Quantum Cryptography (NIST PQC Algorithms)
+liboqs-python>=0.9.0          # Open Quantum Safe - PQC algorithms
+pqcrypto>=0.2.0                # Python PQC library
+
+# Classical Cryptography
+cryptography>=41.0.7           # Modern cryptographic recipes
+pyOpenSSL>=23.3.0              # OpenSSL bindings
+pycryptodome>=3.19.0           # Cryptographic primitives
+
+# ============================================
+# Quantum Computing & QKD Simulation
+# ============================================
+
+qiskit>=0.45.0                 # IBM Quantum computing framework
+qiskit-aer>=0.13.0             # High-performance simulator
+qiskit-ibm-runtime>=0.15.0     # IBM Quantum runtime
+numpy>=1.24.0                  # Numerical computing
+scipy>=1.11.0                  # Scientific computing
+
+# ============================================
+# Networking & Communication Protocols
+# ============================================
+
+scapy>=2.5.0                   # Packet manipulation (V2X, CAN)
+can-isotp>=2.0.0               # ISO-TP protocol for CAN
+python-can>=4.3.0              # CAN bus library
+websockets>=12.0               # WebSocket protocol
+aiohttp>=3.9.0                 # Async HTTP client/server
+
+# TLS/SSL Extensions
+tlslite-ng>=0.7.6              # TLS protocol implementation
+pyca-tls>=0.1.0                # TLS utilities
+
+# ============================================
+# AUTOSAR & Automotive Standards
+# ============================================
+
+# Note: Many AUTOSAR tools are commercial/proprietary
+# Listed here are open-source alternatives and interfaces
+
+# Hardware Security Module (HSM) Integration
+python-pkcs11>=0.7.0           # PKCS#11 interface for HSM
+tpm2-pytss>=2.2.0              # TPM 2.0 Python interface
+
+# ============================================
+# Entropy & Random Number Generation
+# ============================================
+
+secrets                        # Cryptographically strong random numbers (stdlib)
+# For hardware RNG, we'll interface with /dev/random or custom drivers
+
+# ============================================
+# Testing & Validation
+# ============================================
+
+pytest>=7.4.3                  # Testing framework
+pytest-asyncio>=0.21.1         # Async test support
+pytest-cov>=4.1.0              # Coverage reporting
+pytest-benchmark>=4.0.0        # Performance benchmarking
+hypothesis>=6.92.0             # Property-based testing
+
+# Security Testing
+bandit>=1.7.5                  # Security linter
+safety>=2.3.5                  # Dependency vulnerability scanner
+
+# ============================================
+# Performance & Monitoring
+# ============================================
+
+psutil>=5.9.6                  # System monitoring
+memory-profiler>=0.61.0        # Memory profiling
+py-spy>=0.3.14                 # Sampling profiler
+line-profiler>=4.1.1           # Line-by-line profiling
+
+# ============================================
+# Data Handling & Serialization
+# ============================================
+
+pydantic>=2.5.0                # Data validation
+msgpack>=1.0.7                 # Binary serialization
+protobuf>=4.25.0               # Protocol buffers
+asn1crypto>=1.5.1              # ASN.1 parsing (for certificates)
+
+# ============================================
+# Logging & Monitoring
+# ============================================
+
+loguru>=0.7.2                  # Advanced logging
+prometheus-client>=0.19.0      # Metrics collection
+opentelemetry-api>=1.21.0      # Telemetry API
+opentelemetry-sdk>=1.21.0      # Telemetry SDK
+
+# ============================================
+# Development Tools
+# ============================================
+
+black>=23.12.0                 # Code formatting
+isort>=5.13.0                  # Import sorting
+mypy>=1.7.0                    # Static type checking
+pylint>=3.0.3                  # Code linting
+pre-commit>=3.6.0              # Git hooks
+
+# ============================================
+# Documentation
+# ============================================
+
+sphinx>=7.2.6                  # Documentation generator
+sphinx-rtd-theme>=2.0.0        # Read the Docs theme
+sphinx-autodoc-typehints>=1.25.0  # Type hints in docs
+myst-parser>=2.0.0             # Markdown support for Sphinx
+
+# ============================================
+# Utilities
+# ============================================
+
+click>=8.1.7                   # CLI creation
+rich>=13.7.0                   # Rich terminal output
+typer>=0.9.0                   # Modern CLI framework
+pyyaml>=6.0.1                  # YAML parsing
+toml>=0.10.2                   # TOML parsing
+python-dotenv>=1.0.0           # Environment variable management
+
+# ============================================
+# Date & Time
+# ============================================
+
+python-dateutil>=2.8.2         # Date utilities
+pytz>=2023.3                   # Timezone support
+
+# ============================================
+# Optional: Machine Learning for Threat Detection
+# ============================================
+
+# Uncomment if implementing ML-based threat detection
+# scikit-learn>=1.3.2
+# tensorflow>=2.15.0
+# torch>=2.1.0
+
+# ============================================
+# Hardware Interface (HIL Platform)
+# ============================================
+
+# For NVIDIA Orin / Jetson platforms
+# jetson-stats>=4.2.3          # NVIDIA Jetson monitoring (install separately on target)
+
+# Serial/GPIO for ECU communication
+pyserial>=3.5                  # Serial port access
+spidev>=3.6                    # SPI interface (Linux only)
+# RPi.GPIO>=0.7.1              # GPIO (Raspberry Pi - if used)
+
+# ============================================
+# Compliance & Standards
+# ============================================
+
+# ISO/SAE 21434, UNECE R155/R156 validation tools
+# (Most are proprietary; we'll implement custom validators)
+
+# ============================================
+# Version Constraints
+# ============================================
+
+# Python version requirement: >=3.9,<3.13

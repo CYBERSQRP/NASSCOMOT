@@ -1,0 +1,342 @@
+# NASSCOMOT .gitignore
+
+# ============================================
+# Python
+# ============================================
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+cover/
+
+# Translations
+*.mo
+*.pot
+
+# Django/Flask stuff:
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Scrapy stuff:
+.scrapy
+
+# Sphinx documentation
+docs/_build/
+docs/_static/
+docs/_templates/
+
+# PyBuilder
+.pybuilder/
+target/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IPython
+profile_default/
+ipython_config.py
+
+# pyenv
+.python-version
+
+# pipenv
+Pipfile.lock
+
+# poetry
+poetry.lock
+
+# pdm
+.pdm.toml
+
+# PEP 582
+__pypackages__/
+
+# Celery stuff
+celerybeat-schedule
+celerybeat.pid
+
+# SageMath parsed files
+*.sage.py
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+# pytype static type analyzer
+.pytype/
+
+# Cython debug symbols
+cython_debug/
+
+# ============================================
+# C/C++
+# ============================================
+
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+# ============================================
+# IDEs
+# ============================================
+
+# Visual Studio Code
+.vscode/
+*.code-workspace
+
+# PyCharm
+.idea/
+*.iml
+
+# Eclipse
+.project
+.cproject
+.settings/
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim
+*.swp
+*.swo
+*~
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+
+# ============================================
+# Operating System
+# ============================================
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+
+# Linux
+*~
+.directory
+.Trash-*
+
+# ============================================
+# Project Specific
+# ============================================
+
+# Cryptographic keys and certificates (NEVER commit these!)
+*.pem
+*.key
+*.crt
+*.csr
+*.p12
+*.pfx
+*.jks
+*.keystore
+*.priv
+*.pub
+keys/
+certs/
+secrets/
+
+# Configuration files with sensitive data
+*.secret
+*.credentials
+config.local.yaml
+.env.local
+.env.*.local
+
+# QKD simulation data
+qkd_keys/
+quantum_states/
+*.qasm
+*.qpy
+
+# Test results and benchmarks
+test_results/
+benchmark_results/
+*.benchmark
+*.prof
+*.lprof
+
+# Logs
+logs/
+*.log
+*.log.*
+
+# Hardware-in-Loop specific
+hil_data/
+can_traces/
+*.blf
+*.asc
+*.trc
+
+# AUTOSAR artifacts
+*.arxml.bak
+autosar_output/
+
+# OTA firmware images (these are typically large)
+firmware/
+*.bin
+*.hex
+*.elf
+ota_packages/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.temp
+*.bak
+*.swp
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Documentation builds
+_build/
+_static/
+_templates/
+
+# Compliance reports
+compliance_reports/
+audit_logs/
+
+# ============================================
+# Security & Compliance
+# ============================================
+
+# Never commit these patterns
+*password*
+*secret*
+*token*
+*api_key*
+*private_key*
+
+# Exception: Documentation and example files are OK
+!docs/*password*.md
+!examples/*secret*.example
+!examples/*key*.example
+
+# ============================================
+# CI/CD
+# ============================================
+
+.gitlab-ci-local/
+.github/workflows/*.log
+
+# ============================================
+# Custom Ignore Patterns
+# ============================================
+
+# Add any project-specific patterns below
