@@ -122,8 +122,16 @@ class SLHDSASignature:
             self._use_liboqs = True
             self._oqs = oqs
         except ImportError:
+            # SECURITY: Reference implementation is INSECURE and disabled
+            # Users MUST install liboqs for production use
             self._use_liboqs = False
-            print("WARNING: liboqs not found. Using reference implementation.")
+            self._oqs = None
+            raise ImportError(
+                "CRITICAL SECURITY ERROR: liboqs is required for production use. "
+                "The reference implementation is insecure and has been disabled. "
+                "Please install liboqs-python and liboqs C library. "
+                "See: https://github.com/open-quantum-safe/liboqs-python"
+            )
 
     def _get_algorithm_name(self, level: int) -> str:
         """Get algorithm name from security level."""
@@ -133,10 +141,7 @@ class SLHDSASignature:
     def generate_keypair(self) -> PQCKeyPair:
         """Generate SLH-DSA key pair."""
         try:
-            if self._use_liboqs:
-                return self._generate_keypair_liboqs()
-            else:
-                return self._generate_keypair_reference()
+            return self._generate_keypair_liboqs()
         except Exception as e:
             raise KeyGenerationError(f"Failed to generate SLH-DSA keypair: {e}")
 
@@ -155,25 +160,11 @@ class SLHDSASignature:
                 security_level=self.security_level,
             )
 
-    def _generate_keypair_reference(self) -> PQCKeyPair:
-        """Reference implementation (demo only)."""
-        public_key = generate_random_bytes(self.params["public_key_size"])
-        secret_key = generate_random_bytes(self.params["secret_key_size"])
-
-        return PQCKeyPair(
-            public_key=public_key,
-            secret_key=secret_key,
-            algorithm=self.algorithm_name,
-            security_level=self.security_level,
-        )
 
     def sign(self, secret_key: bytes, message: bytes) -> SLHDSASignatureData:
         """Sign a message using SLH-DSA."""
         try:
-            if self._use_liboqs:
-                signature_bytes = self._sign_liboqs(secret_key, message)
-            else:
-                signature_bytes = self._sign_reference(secret_key, message)
+            signature_bytes = self._sign_liboqs(secret_key, message)
 
             return SLHDSASignatureData(
                 signature=signature_bytes,
@@ -191,21 +182,13 @@ class SLHDSASignature:
             sig.import_secret_key(secret_key)
             return sig.sign(message)
 
-    def _sign_reference(self, secret_key: bytes, message: bytes) -> bytes:
-        """Reference signing (demo only)."""
-        hash_part = hash_function(secret_key + message, "sha3-512")
-        random_part = generate_random_bytes(self.params["signature_size"] - len(hash_part))
-        return hash_part + random_part
 
     def verify(
         self, public_key: bytes, message: bytes, signature: SLHDSASignatureData
     ) -> bool:
         """Verify an SLH-DSA signature."""
         try:
-            if self._use_liboqs:
-                return self._verify_liboqs(public_key, message, signature.signature)
-            else:
-                return self._verify_reference(public_key, message, signature.signature)
+            return self._verify_liboqs(public_key, message, signature.signature)
         except Exception:
             return False
 
@@ -219,9 +202,6 @@ class SLHDSASignature:
             except Exception:
                 return False
 
-    def _verify_reference(self, public_key: bytes, message: bytes, signature: bytes) -> bool:
-        """Reference verification (demo only)."""
-        return len(signature) == self.params["signature_size"]
 
 
 # Convenience classes
