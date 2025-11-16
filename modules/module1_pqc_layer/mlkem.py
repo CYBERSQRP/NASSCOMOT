@@ -95,11 +95,15 @@ class MLKEMKeyExchange:
             self._use_liboqs = True
             self._oqs = oqs
         except ImportError:
-            # Fallback to reference implementation (slower, for testing only)
+            # SECURITY: Reference implementation is INSECURE and disabled
+            # Users MUST install liboqs for production use
             self._use_liboqs = False
-            print(
-                "WARNING: liboqs not found. Using reference implementation. "
-                "Install liboqs-python for production use."
+            self._oqs = None
+            raise ImportError(
+                "CRITICAL SECURITY ERROR: liboqs is required for production use. "
+                "The reference implementation is insecure and has been disabled. "
+                "Please install liboqs-python and liboqs C library. "
+                "See: https://github.com/open-quantum-safe/liboqs-python"
             )
 
     def _get_algorithm_name(self, level: int) -> str:
@@ -127,10 +131,7 @@ class MLKEMKeyExchange:
             - ML-KEM-1024: ~30 μs
         """
         try:
-            if self._use_liboqs:
-                return self._generate_keypair_liboqs()
-            else:
-                return self._generate_keypair_reference()
+            return self._generate_keypair_liboqs()
         except Exception as e:
             raise KeyGenerationError(f"Failed to generate ML-KEM keypair: {e}")
 
@@ -150,21 +151,6 @@ class MLKEMKeyExchange:
                 security_level=self.security_level,
             )
 
-    def _generate_keypair_reference(self) -> PQCKeyPair:
-        """
-        Generate keypair using reference implementation.
-        WARNING: This is a simplified version for testing only!
-        """
-        # Generate random keys (NOT SECURE - for demo only)
-        public_key = generate_random_bytes(self.params["public_key_size"])
-        secret_key = generate_random_bytes(self.params["secret_key_size"])
-
-        return PQCKeyPair(
-            public_key=public_key,
-            secret_key=secret_key,
-            algorithm=self.algorithm_name,
-            security_level=self.security_level,
-        )
 
     def encapsulate(self, public_key: bytes) -> Tuple[MLKEMCiphertext, bytes]:
         """
@@ -185,10 +171,7 @@ class MLKEMKeyExchange:
             - ML-KEM-1024: ~35 μs
         """
         try:
-            if self._use_liboqs:
-                return self._encapsulate_liboqs(public_key)
-            else:
-                return self._encapsulate_reference(public_key)
+            return self._encapsulate_liboqs(public_key)
         except Exception as e:
             raise EncapsulationError(f"Failed to encapsulate: {e}")
 
@@ -204,22 +187,6 @@ class MLKEMKeyExchange:
                 shared_secret,
             )
 
-    def _encapsulate_reference(self, public_key: bytes) -> Tuple[MLKEMCiphertext, bytes]:
-        """
-        Encapsulate using reference implementation.
-        WARNING: This is a simplified version for testing only!
-        """
-        # Generate random ciphertext and shared secret (NOT SECURE - for demo only)
-        ciphertext = generate_random_bytes(self.params["ciphertext_size"])
-        shared_secret = generate_random_bytes(self.params["shared_secret_size"])
-
-        # In real implementation, shared_secret = H(pk || ct || random)
-        # This ensures both parties can derive the same key
-
-        return (
-            MLKEMCiphertext(ciphertext=ciphertext, algorithm=self.algorithm_name),
-            shared_secret,
-        )
 
     def decapsulate(self, secret_key: bytes, ciphertext: MLKEMCiphertext) -> bytes:
         """
@@ -241,10 +208,7 @@ class MLKEMKeyExchange:
             - ML-KEM-1024: ~40 μs
         """
         try:
-            if self._use_liboqs:
-                return self._decapsulate_liboqs(secret_key, ciphertext)
-            else:
-                return self._decapsulate_reference(secret_key, ciphertext)
+            return self._decapsulate_liboqs(secret_key, ciphertext)
         except Exception as e:
             raise DecapsulationError(f"Failed to decapsulate: {e}")
 
@@ -261,17 +225,6 @@ class MLKEMKeyExchange:
 
             return shared_secret
 
-    def _decapsulate_reference(self, secret_key: bytes, ciphertext: MLKEMCiphertext) -> bytes:
-        """
-        Decapsulate using reference implementation.
-        WARNING: This is a simplified version for testing only!
-        """
-        # In reference implementation, derive key from secret and ciphertext
-        # This is NOT the real algorithm!
-        combined = secret_key + ciphertext.ciphertext
-        shared_secret = hash_function(combined, "sha3-256")
-
-        return shared_secret[:self.params["shared_secret_size"]]
 
     def get_algorithm_info(self) -> dict:
         """Get information about the current algorithm configuration."""

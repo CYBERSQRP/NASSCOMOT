@@ -19,13 +19,21 @@ Compliance: ISO/SAE 21434, AUTOSAR Adaptive Platform
 __version__ = "1.0.0"
 
 from .ecu_crypto import ECUCryptoManager
-from .can_security import SecureCANBus
+from .can_security import (
+    SecureCANBus,
+    CANSecureFrame,
+    CANSecurityLevel,
+    setup_ecu_can_network,
+)
 from .someip_security import SecureSOMEIP
 from .ethernet_security import AutomotiveEthernetSecurity
 
 __all__ = [
     "ECUCryptoManager",
     "SecureCANBus",
+    "CANSecureFrame",
+    "CANSecurityLevel",
+    "setup_ecu_can_network",
     "SecureSOMEIP",
     "AutomotiveEthernetSecurity",
 ]

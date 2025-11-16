@@ -50,6 +50,16 @@ from .utils import (
     constant_time_compare,
 )
 
+from .secure_memory import (
+    SecureBytes,
+    SecureKeyPair,
+    secure_compare,
+    secure_random_bytes,
+    secure_operation,
+    zeroize_bytes,
+    create_secure_keypair,
+)
+
 __all__ = [
     # ML-KEM (Key Encapsulation)
     "MLKEMKeyExchange",
@@ -78,4 +88,13 @@ __all__ = [
     "SecurityLevel",
     "hash_function",
     "constant_time_compare",
+
+    # Secure Memory
+    "SecureBytes",
+    "SecureKeyPair",
+    "secure_compare",
+    "secure_random_bytes",
+    "secure_operation",
+    "zeroize_bytes",
+    "create_secure_keypair",
 ]

@@ -102,11 +102,15 @@ class MLDSASignature:
             self._use_liboqs = True
             self._oqs = oqs
         except ImportError:
-            # Fallback to reference implementation (slower, for testing only)
+            # SECURITY: Reference implementation is INSECURE and disabled
+            # Users MUST install liboqs for production use
             self._use_liboqs = False
-            print(
-                "WARNING: liboqs not found. Using reference implementation. "
-                "Install liboqs-python for production use."
+            self._oqs = None
+            raise ImportError(
+                "CRITICAL SECURITY ERROR: liboqs is required for production use. "
+                "The reference implementation is insecure and has been disabled. "
+                "Please install liboqs-python and liboqs C library. "
+                "See: https://github.com/open-quantum-safe/liboqs-python"
             )
 
     def _get_algorithm_name(self, level: int) -> str:
@@ -134,10 +138,7 @@ class MLDSASignature:
             - ML-DSA-87: ~90 μs
         """
         try:
-            if self._use_liboqs:
-                return self._generate_keypair_liboqs()
-            else:
-                return self._generate_keypair_reference()
+            return self._generate_keypair_liboqs()
         except Exception as e:
             raise KeyGenerationError(f"Failed to generate ML-DSA keypair: {e}")
 
@@ -157,21 +158,6 @@ class MLDSASignature:
                 security_level=self.security_level,
             )
 
-    def _generate_keypair_reference(self) -> PQCKeyPair:
-        """
-        Generate keypair using reference implementation.
-        WARNING: This is a simplified version for testing only!
-        """
-        # Generate random keys (NOT SECURE - for demo only)
-        public_key = generate_random_bytes(self.params["public_key_size"])
-        secret_key = generate_random_bytes(self.params["secret_key_size"])
-
-        return PQCKeyPair(
-            public_key=public_key,
-            secret_key=secret_key,
-            algorithm=self.algorithm_name,
-            security_level=self.security_level,
-        )
 
     def sign(
         self,
@@ -210,10 +196,7 @@ class MLDSASignature:
             else:
                 message_to_sign = message
 
-            if self._use_liboqs:
-                signature_bytes = self._sign_liboqs(secret_key, message_to_sign)
-            else:
-                signature_bytes = self._sign_reference(secret_key, message_to_sign)
+            signature_bytes = self._sign_liboqs(secret_key, message_to_sign)
 
             return MLDSASignatureData(
                 signature=signature_bytes,
@@ -237,17 +220,6 @@ class MLDSASignature:
 
             return signature
 
-    def _sign_reference(self, secret_key: bytes, message: bytes) -> bytes:
-        """
-        Sign using reference implementation.
-        WARNING: This is a simplified version for testing only!
-        """
-        # Simplified: signature = H(secret_key || message) || random
-        # Real ML-DSA is much more complex!
-        hash_part = hash_function(secret_key + message, "sha3-512")
-        random_part = generate_random_bytes(self.params["signature_size"] - len(hash_part))
-
-        return hash_part + random_part
 
     def verify(
         self,
@@ -284,10 +256,7 @@ class MLDSASignature:
             else:
                 message_to_verify = message
 
-            if self._use_liboqs:
-                return self._verify_liboqs(public_key, message_to_verify, signature.signature)
-            else:
-                return self._verify_reference(public_key, message_to_verify, signature.signature)
+            return self._verify_liboqs(public_key, message_to_verify, signature.signature)
 
         except Exception as e:
             # Log error but return False (don't leak info via exceptions)
@@ -306,14 +275,6 @@ class MLDSASignature:
             except Exception:
                 return False
 
-    def _verify_reference(self, public_key: bytes, message: bytes, signature: bytes) -> bool:
-        """
-        Verify using reference implementation.
-        WARNING: This is a simplified version for testing only!
-        """
-        # This is NOT a real verification algorithm!
-        # Just checking signature length for demo
-        return len(signature) == self.params["signature_size"]
 
     def get_algorithm_info(self) -> dict:
         """Get information about the current algorithm configuration."""
